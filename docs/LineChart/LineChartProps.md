@@ -661,6 +661,7 @@ type Pointer = {
   pointerLabelWidth?: number; // default: 20
   pointerLabelHeight?: number; // default: 20
   autoAdjustPointerLabelPosition?: boolean; // default: false
+  topPointerLabel?: boolean; // default: false
   pointerVanishDelay?: number; // default: 150
   activatePointersOnLongPress?: boolean; // default: false
   activatePointersDelay?: number; // default: 150
