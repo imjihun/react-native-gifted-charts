@@ -24,7 +24,7 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
-    "gifted-charts-core": "github:imjihun/gifted-charts-core#f183b7570a58494d0597f3b044f6d32e975e8b80"
+    "gifted-charts-core": "github:imjihun/gifted-charts-core#abcfe41600e1cb5560fffd643e000e7593e9e18d"
   },
   "devDependencies": {
     "@babel/core": "^7.22.5",

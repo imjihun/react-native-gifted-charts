@@ -451,6 +451,11 @@ export const LineChart = (props: LineChartPropsType) => {
     labelTextStyle: any,
     labelComponent: Function | undefined,
   ) => {
+    const width = spacing + labelsExtraHeight
+    let left = (spacing * index) - (width / 2)
+    if (left < initialSpacing) { left = -initialSpacing }
+    if ((left + width) > totalWidth - initialSpacing) { left = totalWidth - width - initialSpacing }
+
     return (
       <View
         style={[
@@ -458,11 +463,8 @@ export const LineChart = (props: LineChartPropsType) => {
             position: 'absolute',
             bottom: 54 - xAxisTextNumberOfLines * 18,
             zIndex: 10,
-            width: spacing + labelsExtraHeight,
-            left:
-              index === 0 && initialSpacing < 10
-                ? initialSpacing / 2 + spacing * index - spacing / 2 + 4
-                : initialSpacing / 2 + spacing * index - spacing / 2 - 10,
+            width: width,
+            left: left,
             height: props.xAxisLabelsHeight ?? xAxisTextNumberOfLines * 18,
           },
           rotateLabel && { transform: [{ rotate: '60deg' }] },
@@ -486,6 +488,11 @@ export const LineChart = (props: LineChartPropsType) => {
     labelTextStyle: any,
     labelComponent: Function | undefined,
   ) => {
+    const width = spacing + labelsExtraHeight
+    let left = (spacing * index) - (width / 2)
+    if (left < initialSpacing) { left = -initialSpacing }
+    if ((left + width) > totalWidth - initialSpacing) { left = totalWidth - width - initialSpacing }
+
     return (
       <Animated.View
         style={[
@@ -496,11 +503,8 @@ export const LineChart = (props: LineChartPropsType) => {
             position: 'absolute',
             bottom: rotateLabel ? 10 : 54 - xAxisTextNumberOfLines * 18,
             zIndex: 10,
-            width: spacing,
-            left:
-              index === 0 && initialSpacing < 10
-                ? initialSpacing / 2 + spacing * index - spacing / 2 + 4
-                : initialSpacing / 2 + spacing * index - spacing / 2 - 10,
+            width: width,
+            left: left,
             opacity: appearingOpacity,
           },
           rotateLabel && { transform: [{ rotate: '60deg' }] },
