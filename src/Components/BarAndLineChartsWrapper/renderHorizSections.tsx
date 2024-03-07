@@ -1,7 +1,7 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+import { Text, View } from 'react-native';
 import Rule from '../lineSvg';
-import {styles} from '../../LineChart/styles';
+import { styles } from '../../LineChart/styles';
 import {
   getHorizSectionVals,
   yAxisSides,
@@ -88,26 +88,24 @@ export const renderHorizSections = (props: horizSectionPropTypes) => {
           index === noOfSections
             ? styles.lastLeftPart
             : !index
-              ? {justifyContent: 'flex-start'}
+              ? { justifyContent: 'flex-start' }
               : styles.leftPart,
           {
             borderColor: yAxisColor,
             backgroundColor: backgroundColor,
-            width: (props.width || totalWidth - spacing) + endSpacing,
+            width: (props.width || totalWidth),
           },
-          !index ? {height: stepHeight / 2, marginTop: stepHeight / 2} : null,
+          !index ? { height: stepHeight / 2, marginTop: stepHeight / 2 } : null,
           yAxisSide === yAxisSides.RIGHT
-            ? {borderRightWidth: yAxisThickness}
-            : {borderLeftWidth: yAxisThickness},
+            ? { borderRightWidth: yAxisThickness }
+            : { borderLeftWidth: yAxisThickness },
         ]}>
         {index === noOfSections ? (
           <Rule
             config={{
               thickness: xAxisThickness,
               color: xAxisColor,
-              width:
-                xAxisLength ||
-                (props.width || totalWidth - spacing) + endSpacing,
+              width: xAxisLength || (props.width || totalWidth),
               dashWidth: dashWidth,
               dashGap: dashGap,
               type: xAxisType,
@@ -140,8 +138,8 @@ export const renderHorizSections = (props: horizSectionPropTypes) => {
                 yAxisIndicesWidth / -2 +
                 (yAxisSide === yAxisSides.RIGHT
                   ? (width ?? totalWidth) +
-                    yAxisLabelWidth / 2 +
-                    yAxisIndicesWidth / 4
+                  yAxisLabelWidth / 2 +
+                  yAxisIndicesWidth / 4
                   : 0),
               backgroundColor: yAxisIndicesColor,
             }}
@@ -160,9 +158,9 @@ export const renderHorizSections = (props: horizSectionPropTypes) => {
           top: stepHeight / 2,
         },
         horizontal &&
-          !yAxisAtTop && {
-            transform: [{rotateY: '180deg'}],
-          },
+        !yAxisAtTop && {
+          transform: [{ rotateY: '180deg' }],
+        },
         horizontalRulesStyle,
       ]}>
       <View
@@ -184,8 +182,8 @@ export const renderHorizSections = (props: horizSectionPropTypes) => {
             width: (props.width || totalWidth - spacing) + endSpacing,
           },
           yAxisSide === yAxisSides.RIGHT
-            ? {borderRightWidth: yAxisThickness}
-            : {borderLeftWidth: yAxisThickness},
+            ? { borderRightWidth: yAxisThickness }
+            : { borderLeftWidth: yAxisThickness },
         ]}
       />
     </View>
@@ -264,7 +262,7 @@ export const renderHorizSections = (props: horizSectionPropTypes) => {
             {referenceLine1Config.labelText ? (
               <Text
                 style={[
-                  {position: 'absolute'},
+                  { position: 'absolute' },
                   referenceLine1Config.labelTextStyle,
                 ]}>
                 {referenceLine1Config.labelText}
@@ -290,7 +288,7 @@ export const renderHorizSections = (props: horizSectionPropTypes) => {
             {referenceLine2Config.labelText ? (
               <Text
                 style={[
-                  {position: 'absolute'},
+                  { position: 'absolute' },
                   referenceLine2Config.labelTextStyle,
                 ]}>
                 {referenceLine2Config.labelText}
@@ -316,7 +314,7 @@ export const renderHorizSections = (props: horizSectionPropTypes) => {
             {referenceLine3Config.labelText ? (
               <Text
                 style={[
-                  {position: 'absolute'},
+                  { position: 'absolute' },
                   referenceLine3Config.labelTextStyle,
                 ]}>
                 {referenceLine3Config.labelText}
@@ -336,7 +334,7 @@ export const renderHorizSections = (props: horizSectionPropTypes) => {
             flexDirection: 'row',
             backgroundColor: 'green',
           }}>
-          <View style={{width: (width ?? totalWidth) + endSpacing}}>
+          <View style={{ width: (width ?? totalWidth) + endSpacing }}>
             {referenceLines()}
           </View>
         </View>
@@ -347,7 +345,7 @@ export const renderHorizSections = (props: horizSectionPropTypes) => {
             flexDirection: 'row',
             marginTop: stepHeight / -2,
           }}>
-          <View style={{width: (width ?? totalWidth) + endSpacing}}>
+          <View style={{ width: (width ?? totalWidth) + endSpacing }}>
             {yAxisExtraHeightAtTop ? renderExtraHeightOfYAxisAtTop() : null}
             {horizSections.map((sectionItems, index) => {
               return (
@@ -359,9 +357,9 @@ export const renderHorizSections = (props: horizSectionPropTypes) => {
                       width: (width ?? totalWidth) + endSpacing,
                     },
                     horizontal &&
-                      !yAxisAtTop && {
-                        transform: [{rotateY: '180deg'}],
-                      },
+                    !yAxisAtTop && {
+                      transform: [{ rotateY: '180deg' }],
+                    },
                     horizontalRulesStyle,
                   ]}>
                   <View
@@ -387,64 +385,63 @@ export const renderHorizSections = (props: horizSectionPropTypes) => {
               /***********************************************************************************************/
 
               !hideYAxisText &&
-                horizSections.map((sectionItems, index) => {
-                  let label = getLabelTexts(sectionItems.value, index);
-                  if (hideOrigin && index === horizSections.length - 1) {
-                    label = '';
-                  }
-                  return (
-                    <View
-                      key={index}
+              horizSections.map((sectionItems, index) => {
+                let label = getLabelTexts(sectionItems.value, index);
+                if (hideOrigin && index === horizSections.length - 1) {
+                  label = '';
+                }
+                return (
+                  <View
+                    key={index}
+                    style={[
+                      styles.horizBar,
+                      styles.leftLabel,
+                      {
+                        position: 'absolute',
+                        zIndex: 1,
+                        top: stepHeight * index + yAxisExtraHeightAtTop,
+                        width: yAxisLabelWidth,
+                        height:
+                          index === noOfSections
+                            ? stepHeight / 2
+                            : stepHeight,
+                      },
+                      yAxisSide === yAxisSides.RIGHT && {
+                        left: (width ?? totalWidth) + yAxisLabelWidth / 2,
+                      },
+                      horizontal &&
+                      !yAxisAtTop && {
+                        transform: [
+                          {
+                            translateX:
+                              (width ?? totalWidth) - 30 + endSpacing,
+                          },
+                        ],
+                      },
+                      yAxisLabelContainerStyle,
+                    ]}>
+                    <Text
+                      numberOfLines={yAxisTextNumberOfLines}
+                      ellipsizeMode={'clip'}
                       style={[
-                        styles.horizBar,
-                        styles.leftLabel,
-                        {
-                          position: 'absolute',
-                          zIndex: 1,
-                          top: stepHeight * index + yAxisExtraHeightAtTop,
-                          width: yAxisLabelWidth,
-                          height:
-                            index === noOfSections
-                              ? stepHeight / 2
-                              : stepHeight,
-                        },
-                        yAxisSide === yAxisSides.RIGHT && {
-                          left: (width ?? totalWidth) + yAxisLabelWidth / 2,
-                        },
-                        horizontal &&
-                          !yAxisAtTop && {
-                            transform: [
-                              {
-                                translateX:
-                                  (width ?? totalWidth) - 30 + endSpacing,
-                              },
-                            ],
-                          },
-                        yAxisLabelContainerStyle,
-                      ]}>
-                      <Text
-                        numberOfLines={yAxisTextNumberOfLines}
-                        ellipsizeMode={'clip'}
-                        style={[
-                          yAxisTextStyle,
-                          horizontal && {
-                            transform: [
-                              {
-                                rotate: `${
-                                  rotateYAxisTexts ?? (rtl ? 90 : -90)
+                        yAxisTextStyle,
+                        horizontal && {
+                          transform: [
+                            {
+                              rotate: `${rotateYAxisTexts ?? (rtl ? 90 : -90)
                                 }deg`,
-                              },
-                            ],
-                          },
-                          index === noOfSections && {
-                            marginBottom: stepHeight / -2,
-                          },
-                        ]}>
-                        {label}
-                      </Text>
-                    </View>
-                  );
-                })
+                            },
+                          ],
+                        },
+                        index === noOfSections && {
+                          marginBottom: stepHeight / -2,
+                        },
+                      ]}>
+                      {label}
+                    </Text>
+                  </View>
+                );
+              })
               /***********************************************************************************************/
               /***********************************************************************************************/
             }
@@ -458,7 +455,7 @@ export const renderHorizSections = (props: horizSectionPropTypes) => {
                     {
                       width: (width ?? totalWidth) + 15,
                     },
-                    index === 0 && {marginTop: stepHeight / 2},
+                    index === 0 && { marginTop: stepHeight / 2 },
                   ]}>
                   <View
                     style={[
@@ -473,13 +470,13 @@ export const renderHorizSections = (props: horizSectionPropTypes) => {
                         width:
                           yAxisSide === yAxisSides.RIGHT ? 0 : yAxisLabelWidth,
                       },
-                      index === 0 && {marginTop: -stepHeight / 2},
+                      index === 0 && { marginTop: -stepHeight / 2 },
                     ]}
                   />
                   <View
                     style={[
                       styles.leftPart,
-                      {backgroundColor: backgroundColor},
+                      { backgroundColor: backgroundColor },
                     ]}>
                     {hideRules ? null : (
                       <Rule
@@ -506,47 +503,47 @@ export const renderHorizSections = (props: horizSectionPropTypes) => {
               /***********************************************************************************************/
 
               !hideYAxisText &&
-                horizSectionsBelow.map((sectionItems, index) => {
-                  let label = getLabelTexts(
-                    horizSectionsBelow[horizSectionsBelow.length - 1 - index]
-                      .value,
-                    index,
-                  );
-                  return (
-                    <View
-                      key={index}
+              horizSectionsBelow.map((sectionItems, index) => {
+                let label = getLabelTexts(
+                  horizSectionsBelow[horizSectionsBelow.length - 1 - index]
+                    .value,
+                  index,
+                );
+                return (
+                  <View
+                    key={index}
+                    style={[
+                      styles.horizBar,
+                      styles.leftLabel,
+                      {
+                        position: 'absolute',
+                        zIndex: 1,
+                        bottom: stepHeight * index,
+                        width: yAxisLabelWidth,
+                        height:
+                          index === noOfSections
+                            ? stepHeight / 2
+                            : stepHeight,
+                      },
+                      yAxisSide === yAxisSides.RIGHT && {
+                        left: (width ?? totalWidth) + yAxisLabelWidth,
+                      },
+                      yAxisLabelContainerStyle,
+                    ]}>
+                    <Text
+                      numberOfLines={yAxisTextNumberOfLines}
+                      ellipsizeMode={'clip'}
                       style={[
-                        styles.horizBar,
-                        styles.leftLabel,
-                        {
-                          position: 'absolute',
-                          zIndex: 1,
-                          bottom: stepHeight * index,
-                          width: yAxisLabelWidth,
-                          height:
-                            index === noOfSections
-                              ? stepHeight / 2
-                              : stepHeight,
+                        yAxisTextStyle,
+                        index === noOfSections && {
+                          marginBottom: stepHeight / -2,
                         },
-                        yAxisSide === yAxisSides.RIGHT && {
-                          left: (width ?? totalWidth) + yAxisLabelWidth,
-                        },
-                        yAxisLabelContainerStyle,
                       ]}>
-                      <Text
-                        numberOfLines={yAxisTextNumberOfLines}
-                        ellipsizeMode={'clip'}
-                        style={[
-                          yAxisTextStyle,
-                          index === noOfSections && {
-                            marginBottom: stepHeight / -2,
-                          },
-                        ]}>
-                        {label}
-                      </Text>
-                    </View>
-                  );
-                })
+                      {label}
+                    </Text>
+                  </View>
+                );
+              })
               /***********************************************************************************************/
               /***********************************************************************************************/
             }
@@ -576,9 +573,9 @@ export const renderHorizSections = (props: horizSectionPropTypes) => {
                   : null}
                 {noOfSectionsBelowXAxis && !secondaryYAxisConfig.hideYAxisText
                   ? renderSecondaryYaxisLabels(
-                      secondaryHorizSectionsBelow,
-                      true,
-                    )
+                    secondaryHorizSectionsBelow,
+                    true,
+                  )
                   : null}
               </View>
             ) : null
