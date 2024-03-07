@@ -114,6 +114,8 @@ export const LineChart = (props: LineChartPropsType) => {
     dataSet,
     data0,
     labelsExtraHeight,
+    labelsExtraWidth,
+    xAxisLabelWidth,
     animationDuration,
     onDataChangeAnimationDuration,
     animateTogether,
@@ -451,7 +453,7 @@ export const LineChart = (props: LineChartPropsType) => {
     labelTextStyle: any,
     labelComponent: Function | undefined,
   ) => {
-    const width = spacing + labelsExtraHeight
+    const width = xAxisLabelWidth ?? spacing + labelsExtraWidth
     let left = (spacing * index) - (width / 2)
     if (left < initialSpacing) { left = -initialSpacing }
     if ((left + width) > totalWidth - initialSpacing) { left = totalWidth - width - initialSpacing }
@@ -488,7 +490,7 @@ export const LineChart = (props: LineChartPropsType) => {
     labelTextStyle: any,
     labelComponent: Function | undefined,
   ) => {
-    const width = spacing + labelsExtraHeight
+    const width = xAxisLabelWidth ?? spacing + labelsExtraWidth
     let left = (spacing * index) - (width / 2)
     if (left < initialSpacing) { left = -initialSpacing }
     if ((left + width) > totalWidth - initialSpacing) { left = totalWidth - width - initialSpacing }
