@@ -8,6 +8,7 @@ import {
   Platform,
   ColorValue,
   I18nManager,
+  PanResponder,
 } from 'react-native';
 import { styles } from './styles';
 import Svg, {
@@ -1279,221 +1280,235 @@ export const LineChart = (props: LineChartPropsType) => {
     arrowFillColor,
     key?: number,
   ) => {
+    const onStartShouldSetResponder = evt => (pointerConfig ? true : false)
+    const onMoveShouldSetResponder = evt => (pointerConfig ? true : false)
+    const onResponderGrant = evt => {
+      if (!pointerConfig) return;
+      setResponderStartTime(evt.timeStamp);
+      if (activatePointersOnLongPress) {
+        return;
+      }
+      let x = evt.nativeEvent.locationX;
+      if (
+        !activatePointersOnLongPress &&
+        x > (props.width || Dimensions.get('window').width)
+      )
+        return;
+      let factor = (x - initialSpacing) / spacing;
+      factor = Math.round(factor);
+      factor = Math.min(factor, (data0 ?? data).length - 1);
+      factor = Math.max(factor, 0);
+      let z =
+        initialSpacing +
+        spacing * factor -
+        (pointerRadius || pointerWidth / 2) -
+        1;
+      setPointerX(z);
+      setPointerIndex(factor);
+      let item, y;
+      item = (data0 ?? data)[factor];
+      y =
+        containerHeight -
+        (item.value * containerHeight) / maxValue -
+        (pointerRadius || pointerHeight / 2) +
+        10;
+      setPointerY(y);
+      setPointerItem(item);
+      if (data2 && data2.length) {
+        item = data2[factor];
+        if (item) {
+          y =
+            containerHeight -
+            (item.value * containerHeight) / maxValue -
+            (pointerRadius || pointerHeight / 2) +
+            10;
+          setPointerY2(y);
+          setPointerItem2(item);
+        }
+      }
+      if (data3 && data3.length) {
+        item = data3[factor];
+        if (item) {
+          y =
+            containerHeight -
+            (item.value * containerHeight) / maxValue -
+            (pointerRadius || pointerHeight / 2) +
+            10;
+          setPointerY3(y);
+          setPointerItem3(item);
+        }
+      }
+      if (data4 && data4.length) {
+        item = data4[factor];
+        if (item) {
+          y =
+            containerHeight -
+            (item.value * containerHeight) / maxValue -
+            (pointerRadius || pointerHeight / 2) +
+            10;
+          setPointerY4(y);
+          setPointerItem4(item);
+        }
+      }
+      if (data5 && data5.length) {
+        item = data5[factor];
+        if (item) {
+          y =
+            containerHeight -
+            (item.value * containerHeight) / maxValue -
+            (pointerRadius || pointerHeight / 2) +
+            10;
+          setPointerY5(y);
+          setPointerItem5(item);
+        }
+      }
+      if (secondaryData?.length) {
+        item = secondaryData[factor];
+        if (item) {
+          y =
+            containerHeight -
+            (item.value * containerHeight) / maxValue -
+            (pointerRadius || pointerHeight / 2) +
+            10;
+          setSecondaryPointerY(y);
+          setSecondaryPointerItem(item);
+        }
+      }
+    }
+    const onResponderMove = evt => {
+      if (!pointerConfig) return;
+      if (
+        activatePointersOnLongPress &&
+        evt.timeStamp - responderStartTime < activatePointersDelay
+      ) {
+        return;
+      } else {
+        setResponderActive(true);
+      }
+      let x = evt.nativeEvent.locationX;
+      if (
+        !activatePointersOnLongPress &&
+        x > (props.width || Dimensions.get('window').width)
+      )
+        return;
+      let factor = (x - initialSpacing) / spacing;
+      factor = Math.round(factor);
+      factor = Math.min(factor, (data0 ?? data).length - 1);
+      factor = Math.max(factor, 0);
+      let z =
+        initialSpacing +
+        spacing * factor -
+        (pointerRadius || pointerWidth / 2) -
+        1;
+      let item, y;
+      setPointerX(z);
+      setPointerIndex(factor);
+      item = (data0 ?? data)[factor];
+      y =
+        containerHeight -
+        (item.value * containerHeight) / maxValue -
+        (pointerRadius || pointerHeight / 2) +
+        10;
+      setPointerY(y);
+      setPointerItem(item);
+      if (data2 && data2.length) {
+        item = data2[factor];
+        if (item) {
+          y =
+            containerHeight -
+            (item.value * containerHeight) / maxValue -
+            (pointerRadius || pointerHeight / 2) +
+            10;
+          setPointerY2(y);
+          setPointerItem2(item);
+        }
+      }
+      if (data3 && data3.length) {
+        item = data3[factor];
+        if (item) {
+          y =
+            containerHeight -
+            (item.value * containerHeight) / maxValue -
+            (pointerRadius || pointerHeight / 2) +
+            10;
+          setPointerY3(y);
+          setPointerItem3(item);
+        }
+      }
+      if (data4 && data4.length) {
+        item = data4[factor];
+        if (item) {
+          y =
+            containerHeight -
+            (item.value * containerHeight) / maxValue -
+            (pointerRadius || pointerHeight / 2) +
+            10;
+          setPointerY4(y);
+          setPointerItem4(item);
+        }
+      }
+      if (data5 && data5.length) {
+        item = data5[factor];
+        if (item) {
+          y =
+            containerHeight -
+            (item.value * containerHeight) / maxValue -
+            (pointerRadius || pointerHeight / 2) +
+            10;
+          setPointerY5(y);
+          setPointerItem5(item);
+        }
+      }
+      if (secondaryData?.length) {
+        item = secondaryData[factor];
+        if (item) {
+          y =
+            containerHeight -
+            (item.value * containerHeight) / maxValue -
+            (pointerRadius || pointerHeight / 2) +
+            10;
+          setSecondaryPointerY(y);
+          setSecondaryPointerItem(item);
+        }
+      }
+    }
+    // const onResponderReject = evt => {
+    //   console.log('evt...reject.......', evt);
+    // }
+    const onResponderEnd = evt => {
+      // console.log('evt...end.......',evt);
+      setResponderStartTime(0);
+      setPointerIndex(-1);
+      setResponderActive(false);
+      if (!persistPointer)
+        setTimeout(() => setPointerX(0), pointerVanishDelay);
+    }
+    const onResponderTerminationRequest = evt => false
+    // const onResponderTerminate = evt => {
+    //   console.log('evt...terminate.......', evt);
+    // }
+    // const onResponderRelease = evt => {
+    //   setResponderStartTime(0);
+    //   setResponderActive(false);
+    //   setTimeout(() => setPointerX(0), pointerVanishDelay);
+    // }
+
+    const panResponder = PanResponder.create({
+      onShouldBlockNativeResponder: evt => props?.pointerConfig?.shouldBlockNativeResponder || false,
+      onStartShouldSetPanResponder: onStartShouldSetResponder,
+      onMoveShouldSetPanResponder: onMoveShouldSetResponder,
+      onPanResponderGrant: onResponderGrant,
+      onPanResponderMove: onResponderMove,
+      // onPanResponderReject: onResponderReject,
+      onPanResponderEnd: onResponderEnd,
+      onPanResponderTerminationRequest: onResponderTerminationRequest,
+      // onPanResponderTerminate: onResponderTerminate,
+      // onPanResponderRelease: onResponderRelease,
+    })
     return (
       <View
         key={key ?? 0}
-        onStartShouldSetResponder={evt => (pointerConfig ? true : false)}
-        onMoveShouldSetResponder={evt => (pointerConfig ? true : false)}
-        onResponderGrant={evt => {
-          if (!pointerConfig) return;
-          setResponderStartTime(evt.timeStamp);
-          if (activatePointersOnLongPress) {
-            return;
-          }
-          let x = evt.nativeEvent.locationX;
-          if (
-            !activatePointersOnLongPress &&
-            x > (props.width || Dimensions.get('window').width)
-          )
-            return;
-          let factor = (x - initialSpacing) / spacing;
-          factor = Math.round(factor);
-          factor = Math.min(factor, (data0 ?? data).length - 1);
-          factor = Math.max(factor, 0);
-          let z =
-            initialSpacing +
-            spacing * factor -
-            (pointerRadius || pointerWidth / 2) -
-            1;
-          setPointerX(z);
-          setPointerIndex(factor);
-          let item, y;
-          item = (data0 ?? data)[factor];
-          y =
-            containerHeight -
-            (item.value * containerHeight) / maxValue -
-            (pointerRadius || pointerHeight / 2) +
-            10;
-          setPointerY(y);
-          setPointerItem(item);
-          if (data2 && data2.length) {
-            item = data2[factor];
-            if (item) {
-              y =
-                containerHeight -
-                (item.value * containerHeight) / maxValue -
-                (pointerRadius || pointerHeight / 2) +
-                10;
-              setPointerY2(y);
-              setPointerItem2(item);
-            }
-          }
-          if (data3 && data3.length) {
-            item = data3[factor];
-            if (item) {
-              y =
-                containerHeight -
-                (item.value * containerHeight) / maxValue -
-                (pointerRadius || pointerHeight / 2) +
-                10;
-              setPointerY3(y);
-              setPointerItem3(item);
-            }
-          }
-          if (data4 && data4.length) {
-            item = data4[factor];
-            if (item) {
-              y =
-                containerHeight -
-                (item.value * containerHeight) / maxValue -
-                (pointerRadius || pointerHeight / 2) +
-                10;
-              setPointerY4(y);
-              setPointerItem4(item);
-            }
-          }
-          if (data5 && data5.length) {
-            item = data5[factor];
-            if (item) {
-              y =
-                containerHeight -
-                (item.value * containerHeight) / maxValue -
-                (pointerRadius || pointerHeight / 2) +
-                10;
-              setPointerY5(y);
-              setPointerItem5(item);
-            }
-          }
-          if (secondaryData?.length) {
-            item = secondaryData[factor];
-            if (item) {
-              y =
-                containerHeight -
-                (item.value * containerHeight) / maxValue -
-                (pointerRadius || pointerHeight / 2) +
-                10;
-              setSecondaryPointerY(y);
-              setSecondaryPointerItem(item);
-            }
-          }
-        }}
-        onResponderMove={evt => {
-          if (!pointerConfig) return;
-          if (
-            activatePointersOnLongPress &&
-            evt.timeStamp - responderStartTime < activatePointersDelay
-          ) {
-            return;
-          } else {
-            setResponderActive(true);
-          }
-          let x = evt.nativeEvent.locationX;
-          if (
-            !activatePointersOnLongPress &&
-            x > (props.width || Dimensions.get('window').width)
-          )
-            return;
-          let factor = (x - initialSpacing) / spacing;
-          factor = Math.round(factor);
-          factor = Math.min(factor, (data0 ?? data).length - 1);
-          factor = Math.max(factor, 0);
-          let z =
-            initialSpacing +
-            spacing * factor -
-            (pointerRadius || pointerWidth / 2) -
-            1;
-          let item, y;
-          setPointerX(z);
-          setPointerIndex(factor);
-          item = (data0 ?? data)[factor];
-          y =
-            containerHeight -
-            (item.value * containerHeight) / maxValue -
-            (pointerRadius || pointerHeight / 2) +
-            10;
-          setPointerY(y);
-          setPointerItem(item);
-          if (data2 && data2.length) {
-            item = data2[factor];
-            if (item) {
-              y =
-                containerHeight -
-                (item.value * containerHeight) / maxValue -
-                (pointerRadius || pointerHeight / 2) +
-                10;
-              setPointerY2(y);
-              setPointerItem2(item);
-            }
-          }
-          if (data3 && data3.length) {
-            item = data3[factor];
-            if (item) {
-              y =
-                containerHeight -
-                (item.value * containerHeight) / maxValue -
-                (pointerRadius || pointerHeight / 2) +
-                10;
-              setPointerY3(y);
-              setPointerItem3(item);
-            }
-          }
-          if (data4 && data4.length) {
-            item = data4[factor];
-            if (item) {
-              y =
-                containerHeight -
-                (item.value * containerHeight) / maxValue -
-                (pointerRadius || pointerHeight / 2) +
-                10;
-              setPointerY4(y);
-              setPointerItem4(item);
-            }
-          }
-          if (data5 && data5.length) {
-            item = data5[factor];
-            if (item) {
-              y =
-                containerHeight -
-                (item.value * containerHeight) / maxValue -
-                (pointerRadius || pointerHeight / 2) +
-                10;
-              setPointerY5(y);
-              setPointerItem5(item);
-            }
-          }
-          if (secondaryData?.length) {
-            item = secondaryData[factor];
-            if (item) {
-              y =
-                containerHeight -
-                (item.value * containerHeight) / maxValue -
-                (pointerRadius || pointerHeight / 2) +
-                10;
-              setSecondaryPointerY(y);
-              setSecondaryPointerItem(item);
-            }
-          }
-        }}
-        // onResponderReject={evt => {
-        //   console.log('evt...reject.......',evt);
-        // }}
-        onResponderEnd={evt => {
-          // console.log('evt...end.......',evt);
-          setResponderStartTime(0);
-          setPointerIndex(-1);
-          setResponderActive(false);
-          if (!persistPointer)
-            setTimeout(() => setPointerX(0), pointerVanishDelay);
-        }}
-        onResponderTerminationRequest={evt => false}
-        // onResponderTerminate={evt => {
-        //   console.log('evt...terminate.......',evt);
-        // }}
-        // onResponderRelease={evt => {
-        //   setResponderStartTime(0);
-        //   setResponderActive(false);
-        //   setTimeout(() => setPointerX(0), pointerVanishDelay);
-        // }}
+        {...panResponder.panHandlers}
         style={{
           position: 'absolute',
           height:
